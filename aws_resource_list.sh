@@ -31,8 +31,8 @@ if [ $# -ne 2 ]; then
 fi
 
 # Assign the arguments to vaiables and convert the service to lowercase
-aws_region= $1
-aws_service= $2
+aws_region=$1
+aws_service=$(echo "$2" | tr '[:upper:]' '[:lower:]')
 
 # Check if the AWS CLI is installed.
 if ! command -v aws &> /dev/null; then
@@ -52,19 +52,19 @@ fi
 case $aws_service in
     ec2)
         echo "Listing EC2 instances in $aws_region."
-        aws ec2 describe_instances --region $aws_region
+        aws ec2 describe-instances --region $aws_region
         ;;
     rds)
         echo "Listing RDS instances in $aws_region."
-        aws rds describe_instances --region $aws_region
+        aws rds describe-db-instances --region $aws_region
         ;;
     s3)
         echo "Listing S3 buckets in $aws_region."
-        aws s3 list-buckets --region $aws_region
+        aws s3api list-buckets --region $aws_region
         ;;
     vpc)
         echo "Listing VPCs  in $aws_region."
-        aws vpc describe-vpcs --region $aws_region
+        aws ec2 describe-vpcs --region $aws_region
         ;;
     iam)
         echo "Listing IAM Users in $aws_region."
